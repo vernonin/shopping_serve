@@ -10,7 +10,7 @@ APP.use(express.urlencoded({ extended: false }));
 
 // 一定要在路由之前，封装 _sender 中间件
 APP.use((req, res, next) => {
-  res.fastSend = (msg, status = 4000, data = {}) => {
+  res.fastSend = (msg, status = 400, data = {}) => {
     res.send({ status, message: msg instanceof Error ? msg.message : msg, data });
   }
 
