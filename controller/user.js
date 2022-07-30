@@ -7,7 +7,7 @@ const { dbQuery } = require("../db/index")
 const { tables, jwtSecretKey, expiresIn } = require("../config")
 
 
-// 查询用户是否被占用
+// 查询用户
 const getUserSQL = `SELECT * FROM ${tables.user} WHERE username = ?`
 // 插入用户
 const insertUserSQL = `INSERT INTO ${tables.user} SET ?`
