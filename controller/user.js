@@ -30,7 +30,7 @@ exports.register = async (request, response) => {
 		
 		let inserRes = await dbQuery(insertUserSQL, { username, password });
 		if (inserRes.affectedRows !== 1) {
-			throw new Error("注册失败！");
+			throw new Error("注册失败！")
 		}
 
 		response.fastSend("注册成功！", 2000);
