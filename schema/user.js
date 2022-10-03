@@ -11,16 +11,16 @@
  */
 
 // 导入验证规则的包
-const joi = require("@hapi/joi")
+const joi = require("@hapi/joi");
 
 // 必须为6-18位字母、数字
-const regPsd = /^(?![^a-zA-Z]+$)(?!\D+$)/
+const regPsd = /^(?![^a-zA-Z]+$)(?!\D+$)/;
 
 // 定义用户名和密码的验证规则
-const username = joi.string().alphanum().min(2).max(10).required()
-const password = joi.string().pattern(regPsd).required()
+const username = joi.string().alphanum().min(2).max(10).required();
+const password = joi.string().pattern(regPsd).required();
 
 // 定义验证注册和登录表单数据的规则对象
 exports.reg_login_schema = {
   body: { username, password }
-}
+};

@@ -16,16 +16,16 @@ exports.getUser = async (request, response) => {
 		const queryRes = await dbQuery(queryUserSQL, id);
 
 		if (queryRes.length !== 1) {
-			throw Error('用户不存在！')
+			throw Error('用户不存在！');
 		}
 
 		response.fastSend('获取成功！', 2000, {
 			...queryRes[0],
-			password: ''
+			password: ""
 		})
 	}
 	catch (error) {
-		response.fastSend(error)
+		response.fastSend(error);
 	}
 }
 
@@ -35,8 +35,8 @@ exports.getall = async (request, response) => {
 		const queryRes = await dbQuery(queryUsersSQL);
 
 		const users = queryRes.map(user => {
-			user.password = ''
-			return user
+			user.password = "";
+			return user;
 		})
 
 		response.fastSend("获取成功！", 2000, users);
