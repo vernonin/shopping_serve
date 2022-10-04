@@ -43,7 +43,8 @@ exports.register = async (request, response) => {
 
 
 /** 
- * 用户登录的处理函数 /
+ * 用户登录的处理函数
+ */
 exports.login = async (request, response) => {
 	let { username, password } = request.body;
 
