@@ -6,12 +6,12 @@ const db = mysql.createConnection(dataBase);
 
 
 /**
- * @dbQuery 封装操作数据库的方法
+ * @DB_QUERY 封装操作数据库的方法
  * @param {*} sql SQL语句
  * @param {*} criteria 查询参数
  * @returns 
  */
-function dbQuery(sql, criteria) {
+function DB_QUERY(sql, criteria) {
 	return new Promise((resolve, reject) => {
 		db.query(sql, criteria, (err, res) => {
 			if (err) {
@@ -23,4 +23,4 @@ function dbQuery(sql, criteria) {
 	})
 };
 
-module.exports = { db, dbQuery }
+module.exports = { db, DB_QUERY }

@@ -34,6 +34,7 @@ APP.use(expressJWT({
  */
 const userRouter = require("../router/user");
 const userInfoRouter = require("../router/user_info");
+const goodsCateRouter = require("../router/goods_cate")
 
 
 
@@ -43,6 +44,7 @@ const userInfoRouter = require("../router/user_info");
 
 APP.use("/exemption", userRouter);
 APP.use("/user", userInfoRouter);
+APP.use("/goodscate", goodsCateRouter)
 
 
 // 在路由之后，定义错误级别的中间件

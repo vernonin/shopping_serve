@@ -1,19 +1,20 @@
-const { dbQuery } = require("../db/index")
+const { DB_QUERY } = require("../db/index");
 const { tables, jwtSecretKey, expiresIn } = require("../config");
 
 // 获取当前用户
-const queryUserSQL = `SELECT * FROM ${tables.user} WHERE id=?`
+const queryUserSQL = `SELECT * FROM ${tables.user} WHERE id=?`;
 // 获取所有用户
 const queryUsersSQL = `SELECT * FROM ${tables.user}`;
 // 充值
 const rechargeSQL = `UPDATE ${tables.user} SET wallet=? WHERE id=?`;
 
-// 查询当前的用户信息
+
+/* 查询当前的用户信息的处理函数 */
 exports.getUser = async (request, response) => {
 	try {
 		const { id } = request.user;
 
-		const queryRes = await dbQuery(queryUserSQL, id);
+		const queryRes = await DB_QUERY(queryUserSQL, id);
 
 		if (queryRes.length !== 1) {
 			throw Error('用户不存在！');
@@ -29,10 +30,10 @@ exports.getUser = async (request, response) => {
 	}
 }
 
-// 获取所有用户信息的处理函数
+/* 获取所有用户信息的处理函数 */
 exports.getall = async (request, response) => {
 	try {
-		const queryRes = await dbQuery(queryUsersSQL);
+		const queryRes = await DB_QUERY(queryUsersSQL);
 
 		const users = queryRes.map(user => {
 			user.password = "";
@@ -47,20 +48,20 @@ exports.getall = async (request, response) => {
 }
 
 
-// 更新头像的处理函数
+/* 更新头像的处理函数 */
 exports.updateAvatar = async (request, response) => {
 	console.log(request.fields)
 	console.log((request.file))
 	response.send(request.fields)
 }
 
-// 充值钱包
+/* 充值钱包的处理函数 */
 exports.recharge = async (request, response) => {
 	try {
 		const { id } = request.user;
 		const { amount } = request.body;
 
-		const queryRes = await dbQuery(rechargeSQL, [amount, id])
+		const queryRes = await DB_QUERY(rechargeSQL, [amount, id])
 
 		if (queryRes.affectedRows !== 1) {
 			return response.fastSend("充值失败！");

@@ -1,16 +1,16 @@
 // 导入 bcryptjs 对密码进行加密
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
 // 导入生成 Token 的包
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
-const { dbQuery } = require("../db/index")
-const { tables, jwtSecretKey, expiresIn } = require("../config")
+const { DB_QUERY } = require("../db/index");
+const { tables, jwtSecretKey, expiresIn } = require("../config");
 
 
 // 查询用户
-const getUserSQL = `SELECT * FROM ${tables.user} WHERE username = ?`
+const getUserSQL = `SELECT * FROM ${tables.user} WHERE username = ?`;
 // 插入用户
-const insertUserSQL = `INSERT INTO ${tables.user} SET ?`
+const insertUserSQL = `INSERT INTO ${tables.user} SET ?`;
 
 /** 
  * 用户注册的处理函数
@@ -20,7 +20,7 @@ exports.register = async (request, response) => {
 
 	try {
 		
-		let queryRes = await dbQuery(getUserSQL, username);
+		let queryRes = await DB_QUERY(getUserSQL, username);
 		if (queryRes.length > 0) {
 			throw new Error("用户名已存在，请更换其他用户名！");
 		}
@@ -28,7 +28,7 @@ exports.register = async (request, response) => {
 		// 密码加密
 		password = bcrypt.hashSync(password, 10);
 		
-		let inserRes = await dbQuery(insertUserSQL, { username, password });
+		let inserRes = await DB_QUERY(insertUserSQL, { username, password });
 		if (inserRes.affectedRows !== 1) {
 			throw new Error("注册失败，请稍后重试！");
 		}
@@ -43,13 +43,12 @@ exports.register = async (request, response) => {
 
 
 /** 
- * 用户登录的处理函数
- */
+ * 用户登录的处理函数 /
 exports.login = async (request, response) => {
 	let { username, password } = request.body;
 
 	try {
-		let queryRes = await dbQuery(getUserSQL, username);
+		let queryRes = await DB_QUERY(getUserSQL, username);
 
 		if (queryRes.length !== 1) {
 			throw new Error("用户不存在！");

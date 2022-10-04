@@ -14,7 +14,8 @@ const dataBase = {
 
 // 数据库表配置
 const tables = {
-	user: "ss_user"
+	user: "ss_user",
+	goodsCate: "ss_goods_cate"
 };
 
 
