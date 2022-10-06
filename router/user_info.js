@@ -4,6 +4,8 @@ const expressJoi = require("@escook/express-joi");
 
 const {
 	user_id,
+	user_add,
+	user_update,
 	user_batch_delete,
 	user_info_recharge
 } = require("../schema/user_info");
@@ -11,6 +13,8 @@ const {
 const {
 	getall,
 	getUser,
+	addUser,
+	updateUser,
 	deleteUser,
 	batchDelete,
 	updateAvatar,
@@ -22,6 +26,12 @@ const {
 
 /* 查询所有用户 */
 userInfoRouter.get("/getall", getall);
+
+/* 添加用户 */
+userInfoRouter.post("/add", expressJoi(user_add), addUser);
+
+/* 修改用户信息 */
+userInfoRouter.post("/update", expressJoi(user_update), updateUser);
 
 /* 删除单个用户 */
 userInfoRouter.delete("/delete",expressJoi(user_id), deleteUser);
