@@ -54,7 +54,7 @@ exports.addCate = async (request, response) => {
 		const selectResult = await DB_QUERY(selectSQL, [name, alias]);
 
 		if (selectResult.length === 2) {
-			throw Error("分类名称与分类别名已被占用！");
+			throw new Error("分类名称与分类别名已被占用！");
 		}
 
 		if (
@@ -62,15 +62,15 @@ exports.addCate = async (request, response) => {
 			selectResult[0].name === name &&
 			selectResult[0].alias === alias
 		) {
-			throw Error("分类名称与分类别名已被占用！");
+			throw new Error("分类名称与分类别名已被占用！");
 		}
 
 		if (selectResult.length === 1 && selectResult[0].name === name) {
-			throw Error("分类名称名已被占用！");
+			throw new Error("分类名称名已被占用！");
 		}
 
 		if (selectResult.length === 1 && selectResult[0].alias === alias) {
-			throw Error("分类别名名已被占用！");
+			throw new Error("分类别名名已被占用！");
 		}
 
 
@@ -78,7 +78,7 @@ exports.addCate = async (request, response) => {
 		const insertResult = await DB_QUERY(insertSQL, { name, alias });
 
 		if (insertResult.affectedRows !== 1) {
-			throw Error("新增文章分类失败！");
+			throw new Error("新增文章分类失败！");
 		}
 		response.fastSend("新增文章分类成功！", 2000);
 
@@ -96,7 +96,7 @@ exports.updateCate = async (request, response) => {
 		const queryResult = await DB_QUERY(querySQL, [id, name, alias]);
 
 		if (queryResult.length === 2) {
-			throw Error("分类名称与分类别名已被占用，请更换后重试！");
+			throw new Error("分类名称与分类别名已被占用，请更换后重试！");
 		}
 
 		if (
@@ -104,22 +104,22 @@ exports.updateCate = async (request, response) => {
 			queryResult[0].name === name &&
 			queryResult[0].alias === alias
 		) {
-			throw Error("分类名称与分类别名已被占用，请更换后重试！");
+			throw new Error("分类名称与分类别名已被占用，请更换后重试！");
 		}
 
 		if (queryResult.length === 1 && queryResult[0].name === name) {
-			throw Error("分类名称已被占用，请更换后重试！");
+			throw new Error("分类名称已被占用，请更换后重试！");
 		}
 
 		if (queryResult.length === 1 && queryResult[0].alias === alias) {
-			throw Error("分类别名已被占用，请更换后重试！");
+			throw new Error("分类别名已被占用，请更换后重试！");
 		}
 
 
 		const updateResult = await DB_QUERY(updateSQL, [request.body, id]);
 
 		if (updateResult.affectedRows !== 1) {
-			throw Error("更新商品分类失败！");
+			throw new Error("更新商品分类失败！");
 		}
 		
 		response.fastSend("更新商品分类成功！", 2000);
@@ -137,7 +137,7 @@ exports.deleteCate = async (request, response) => {
 		const deleteResult = await DB_QUERY(deleteSQL, id);
 
 		if (deleteResult.affectedRows !== 1) {
-			throw Error("删除商品分类失败！");
+			throw new Error("删除商品分类失败！");
 		}
 		response.fastSend("删除商品分类成功！", 2000);
 
@@ -157,7 +157,7 @@ exports.batchDeleteCate = async (request, response) => {
 		const result = await DB_QUERY(batchdeleteSQL, idsStr);
 
 		if (result.affectedRows !== ids.length) {
-			throw Error("删除商品分类失败！");
+			throw new Error("删除商品分类失败！");
 		}
 
 		response.fastSend("删除商品分类成功！", 2000);

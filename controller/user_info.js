@@ -30,7 +30,7 @@ exports.getUser = async (request, response) => {
 		const queryRes = await DB_QUERY(queryUserSQL, id);
 
 		if (queryRes.length !== 1) {
-			throw Error('用户不存在！');
+			throw new Error('用户不存在！');
 		}
 
 		response.fastSend('获取成功！', 2000, {
@@ -107,7 +107,7 @@ exports.updateUser = async (request, response) => {
 		const updateResult = await DB_QUERY(updateUserSQL, [{...request.body, password}, id]);
 
 		if (updateResult.affectedRows !== 1) {
-			throw Error("更新用户信息失败！");
+			throw new Error("更新用户信息失败！");
 		}
 		
 		response.fastSend("更新用户信息成功！", 2000);
@@ -124,7 +124,7 @@ exports.deleteUser = async (request, response) => {
 		const deleteResult = await DB_QUERY(deleteUserSQL, id);
 
 		if (deleteResult.affectedRows !== 1) {
-			throw Error("删除失败！");
+			throw new Error("删除失败！");
 		}
 
 		response.fastSend("删除成功！", 2000);
@@ -143,7 +143,7 @@ exports.batchDelete = async (request, response) => {
 		const deleteResult = await DB_QUERY(batchdeleteSQL, idsStr);
 
 		if (deleteResult.affectedRows !== ids.length) {
-			throw Error("删除商品分类失败！");
+			throw new Error("删除商品分类失败！");
 		}
 
 		response.fastSend("删除商品分类成功！", 2000);
