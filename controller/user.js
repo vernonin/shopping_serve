@@ -67,8 +67,7 @@ exports.login = async (request, response) => {
 		response.send({
 			status: 2000,
 			message: "登录成功！",
-			token: tokenStr,
-			data: user
+			token: tokenStr
 		});
 
 	}

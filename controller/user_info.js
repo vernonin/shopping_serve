@@ -5,6 +5,10 @@ const { tables, jwtSecretKey, expiresIn } = require("../config");
 const queryUserSQL = `SELECT * FROM ${tables.user} WHERE id=?`;
 // 获取所有用户
 const queryUsersSQL = `SELECT * FROM ${tables.user}`;
+// 删除单个用户
+const deleteUserSQL = `DELETE FROM ${tables.user} WHERE id=?`;
+// 批量删除用户
+const batchdeleteSQL = `DELETE FROM ${tables.user} WHERE FIND_IN_SET (id, ?)`;
 // 充值
 const rechargeSQL = `UPDATE ${tables.user} SET wallet=? WHERE id=?`;
 
@@ -47,6 +51,41 @@ exports.getall = async (request, response) => {
 	}
 }
 
+/* 删除单个用户处理函数 */
+exports.deleteUser = async (request, response) => {
+	try {
+		const { id } = request.query;
+		const deleteResult = await DB_QUERY(deleteUserSQL, id);
+
+		if (deleteResult.affectedRows !== 1) {
+			throw Error("删除失败！");
+		}
+
+		response.fastSend("删除成功！", 2000);
+	}
+	catch (error) {
+		response.fastSend(error)
+	}
+}
+
+/* 批量删除用户的处理函数 */
+exports.batchDelete = async (request, response) => {
+	try {
+		const { ids } = request.body;
+		const idsStr = ids.join();
+
+		const deleteResult = await DB_QUERY(batchdeleteSQL, idsStr);
+
+		if (deleteResult.affectedRows !== ids.length) {
+			throw Error("删除商品分类失败！");
+		}
+
+		response.fastSend("删除商品分类成功！", 2000);
+	}
+	catch (error) {
+		response.fastSend(error)
+	}
+}
 
 /* 更新头像的处理函数 */
 exports.updateAvatar = async (request, response) => {
