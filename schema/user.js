@@ -17,7 +17,7 @@ const joi = require("@hapi/joi");
 const regPsd = /^(?![^a-zA-Z]+$)(?!\D+$)/;
 
 // 定义用户名和密码的验证规则
-const username = joi.string().alphanum().min(6).max(10).required();
+const username = joi.string().alphanum().min(5).max(20).required();
 const password = joi.string().pattern(regPsd).required();
 
 // 定义验证注册和登录表单数据的规则对象
