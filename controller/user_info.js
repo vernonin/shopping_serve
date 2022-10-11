@@ -10,6 +10,7 @@ const insertUserSQL = `INSERT INTO ${tables.user} SET ?`;
 const updateUserSQL = `UPDATE ${tables.user} SET ? WHERE id=?`;
 // 查询用户
 const getUserSQL = `SELECT * FROM ${tables.user} WHERE username = ?`;
+
 // 获取当前用户
 const queryUserSQL = `SELECT * FROM ${tables.user} WHERE id=?`;
 // 获取所有用户
@@ -46,7 +47,7 @@ exports.getUser = async (request, response) => {
 /* 获取所有用户信息的处理函数 */
 exports.getall = async (request, response) => {
 	try {
-		const { search } = request.body;
+		const { search } = request.query;
 		const keyWord = search ? `%${search}%` : `%%`;
 
 		const queryRes = await DB_QUERY(queryUsersSQL, keyWord);
@@ -93,18 +94,19 @@ exports.addUser = async (request, response) => {
 /* 修改用户信息的处理函数 */
 exports.updateUser = async (request, response) => {
 	try {
-		let { id, username, password } = request.body;
+		let { id, username } = request.body;
 
 		const queryRes = await DB_QUERY(getUserSQL, username);
 
-		if (queryRes.length > 0) {
+		if (queryRes.length > 1) {
 			throw new Error("用户名已存在，请更换其他用户名！");
 		}
 
 		// 密码加密
-		password = bcrypt.hashSync(password, 10);
+		// password = bcrypt.hashSync(password, 10);
 
-		const updateResult = await DB_QUERY(updateUserSQL, [{...request.body, password}, id]);
+		// const updateResult = await DB_QUERY(updateUserSQL, [{...request.body, password}, id]);
+		const updateResult = await DB_QUERY(updateUserSQL, [{...request.body}, id]);
 
 		if (updateResult.affectedRows !== 1) {
 			throw new Error("更新用户信息失败！");
