@@ -29,7 +29,7 @@ exports.user_add = {
 }
 
 exports.user_update = {
-	body: { id, username, password, nickname, phone, email, address, role }
+	body: { id, username, nickname, phone, email, address, role }
 }
 
 exports.user_info_recharge = {
