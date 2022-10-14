@@ -10,11 +10,8 @@ const insertUserSQL = `INSERT INTO ${tables.user} SET ?`;
 const updateUserSQL = `UPDATE ${tables.user} SET ? WHERE id=?`;
 // 查询用户
 const getUserSQL = `SELECT * FROM ${tables.user} WHERE username = ?`;
-
 // 获取当前用户
 const queryUserSQL = `SELECT * FROM ${tables.user} WHERE id=?`;
-// 获取所有用户
-const queryUsersSQL = `SELECT * FROM ${tables.user} WHERE username LIKE ?`;
 // 删除单个用户
 const deleteUserSQL = `DELETE FROM ${tables.user} WHERE id=?`;
 // 批量删除用户
@@ -47,9 +44,11 @@ exports.getUser = async (request, response) => {
 /* 获取所有用户信息的处理函数 */
 exports.getall = async (request, response) => {
 	try {
-		const { search } = request.query;
+		const { key, search } = request.query;
 		const keyWord = search ? `%${search}%` : `%%`;
 
+		const queryUsersSQL = `SELECT * FROM ${tables.user} WHERE ${key} LIKE ?`;
+		
 		const queryRes = await DB_QUERY(queryUsersSQL, keyWord);
 
 		const users = queryRes.map(user => {
