@@ -4,8 +4,6 @@ const { tables } = require("../config");
 
 // 查询未被删除单个商品分类的 SQL 语句
 const selectSingleSQL = `SELECT id, name, alias, status FROM ${tables.goodsCate} WHERE id=? AND is_delete=0`;
-// 查询未被删除所有商品分类的 SQL 语句
-const selectAllSQL = `SELECT id, name, alias, status FROM ${tables.goodsCate} WHERE is_delete=0`;
 // 查询 分类名称和分类别名 是否被占用的 SQL 语句
 const selectSQL = `SELECT * FROM ${tables.goodsCate} WHERE name=? OR alias=?`;
 // 添加商品分类的 SQL 语句
@@ -20,9 +18,14 @@ const querySQL = `SELECT * FROM ${tables.goodsCate} WHERE id<>? AND (name=? OR a
 const updateSQL = `UPDATE ${tables.goodsCate} SET ? WhERE id=?`;
 
 /* 获取所有商品分类的处理函数 */
-exports.getAll = async (_, response) => {
+exports.getAll = async (request, response) => {
 	try {
-		const selectResult = await DB_QUERY(selectAllSQL);
+		const { key, search } = request.query;
+		const keyWord = search ? `%${search}%` : `%%`;
+
+		const selectAllSQL = `SELECT id, name, alias, status FROM ${tables.goodsCate} WHERE is_delete=0 AND ${key} LIKE ?`;
+
+		const selectResult = await DB_QUERY(selectAllSQL, keyWord);
 
 		response.fastSend("获取成功！", 2000, selectResult);
 	}
@@ -38,7 +41,7 @@ exports.getSingle = async (request, response) => {
 
 		const selectResult = await DB_QUERY(selectSingleSQL, id);
 
-		response.fastSend("获取成功！", 2000, selectResult);
+		response.fastSend("获取成功！", 2000, selectResult[0]);
 	}
 	catch (error) {
 		response.fastSend(error);
@@ -75,7 +78,7 @@ exports.addCate = async (request, response) => {
 
 
 		// 当数据库没有找到相同时，可以插入
-		const insertResult = await DB_QUERY(insertSQL, { name, alias });
+		const insertResult = await DB_QUERY(insertSQL, request.body);
 
 		if (insertResult.affectedRows !== 1) {
 			throw new Error("新增文章分类失败！");

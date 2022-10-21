@@ -11,7 +11,7 @@ exports.goods_cate_id = {
 }
 
 exports.goods_cate_add = {
-	body: { name, alias }
+	body: { name, alias, status }
 }
 
 exports.goods_cate_update = {
