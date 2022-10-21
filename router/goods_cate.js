@@ -32,9 +32,9 @@ goodsCateRouter.post("/add", expressJoi(goods_cate_add), addCate);
 goodsCateRouter.post("/update", expressJoi(goods_cate_update), updateCate);
 
 /* 删除单个商品分类 */
-goodsCateRouter.delete("/delete",expressJoi(goods_cate_id), deleteCate);
+goodsCateRouter.delete("/delete", expressJoi(goods_cate_id), deleteCate);
 
 /* 批量删除商品分类 */
-goodsCateRouter.delete("/batchdelete",expressJoi(goods_cate_batch_delete), batchDeleteCate);
+goodsCateRouter.delete("/batchdelete", expressJoi(goods_cate_batch_delete), batchDeleteCate);
 
 module.exports = goodsCateRouter;
